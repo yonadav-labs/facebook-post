@@ -21,7 +21,8 @@ from post import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.query, name='query'),
-    url(r'^post', views.post, name='post'),
+    url(r'^post/(?P<query>.+)/(?P<mode>[_]?)$', views.post, name='post'),
+    url(r'^post/(?P<status_id>\d+_\d+)/edit$', views.post_edit, name='post_edit'),
     url(r'^comment$', views.comment, name='comment'),
     url(r'^retrieve_post$', views.retrieve_post, name='retrieve_post'),
 

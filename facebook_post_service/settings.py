@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'post'
+    'post',
+    'scraper',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -124,3 +125,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+FACEBOOK = {
+    'APP_ID': "1679782682332099",
+    'APP_SECRET': "3c9a68e9d6a29b6f240112c7c6998b70" # DO NOT SHARE WITH ANYONE!    
+}
+
+# IN SECOND
+THRESHOLD_POST_TIME = 3 * 60
+THRESHOLD_COMMENT_TIME = 3 * 60

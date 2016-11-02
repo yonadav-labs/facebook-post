@@ -1,10 +1,14 @@
+from threading import Thread
+
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.conf import settings
 
 from post.models import *
+from scraper.get_fb_posts_fb_page import scrapeFacebookPageFeedStatus
 
 
 @login_required(login_url='/login/')
@@ -16,10 +20,27 @@ def query(request):
 
 
 @login_required(login_url='/login/')
-def post(request):
-    return render(request, 'query.html')
+def post(request, query, mode):
+    if query == 'all':
+        posts = Post.objects.all()[:50]
+    else:
+        posts = Post.objects.filter(query__query=query)[:100]
+
+    return render(request, 'post.html', {
+        'posts': posts,
+        'query': query,
+        'mode': mode
+    })
 
 
+@login_required(login_url='/login/')
+def post_edit(request, status_id):
+    post = Post.objects.get(status_id=status_id)
+    return render(request, 'post_form.html', {
+        'post': post
+    })
+
+    
 @login_required(login_url='/login/')
 def comment(request):
     return render(request, 'query.html')
@@ -31,8 +52,13 @@ def retrieve_post(request):
     if Query.objects.filter(query=q).exists():
         status = 'complete'
     else:
-        Query.objects.create(query=q)
+        query = Query.objects.create(query=q)
         # trigger search
+        access_token = settings.FACEBOOK['APP_ID'] + "|" + settings.FACEBOOK['APP_SECRET']
+        post_thread = Thread(target=scrapeFacebookPageFeedStatus, args=(q, access_token, query.id))
+        post_thread.setDaemon(True)
+        post_thread.start()
+
         status = 'loading'
 
     return JsonResponse({'status': status})

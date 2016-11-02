@@ -26,7 +26,7 @@ $('.query_form').submit(function(event) {
 
                     setTimeout(function() {
                         window.location.href = '/post/' + keyword + '/_';
-                    }, 3000);
+                    }, 5000);
                 }
             }
         });
