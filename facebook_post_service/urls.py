@@ -19,5 +19,8 @@ from post import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^login', views.login, name='user_login'),
+    url(r'^$', views.index, name='index'),
+    url(r'^login', views.user_login, name='user_login'),
+    url(r'^signup', views.user_signup, name='user_signup'),
+    url(r'^logout', views.user_logout, name='user_logout'),
 ]
