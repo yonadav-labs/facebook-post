@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 
 from post.models import *
 
@@ -23,6 +23,19 @@ def post(request):
 @login_required(login_url='/login/')
 def comment(request):
     return render(request, 'query.html')
+
+
+@login_required(login_url='/login/')
+def retrieve_post(request):
+    q = request.POST.get('q')
+    if Query.objects.filter(query=q).exists():
+        status = 'complete'
+    else:
+        Query.objects.create(query=q)
+        # trigger search
+        status = 'loading'
+
+    return JsonResponse({'status': status})
 
 
 def user_login(request):
