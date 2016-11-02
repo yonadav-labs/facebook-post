@@ -17,9 +17,12 @@ from django.conf.urls import url
 from django.contrib import admin
 from post import views
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.query, name='query'),
+    url(r'^post$', views.post, name='post'),
+    url(r'^comment$', views.comment, name='comment'),
     url(r'^login', views.user_login, name='user_login'),
     url(r'^signup', views.user_signup, name='user_signup'),
     url(r'^logout', views.user_logout, name='user_logout'),

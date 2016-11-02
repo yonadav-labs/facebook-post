@@ -20,6 +20,7 @@ class Post(models.Model):
 	Model for Facebook Post
 	"""
 	status_id = models.CharField(max_length=50, primary_key=True)
+	query = models.ForeignKey(Query)
 	status_message = models.TextField()
 	link_name = models.CharField(max_length=500, blank=True, null=True)
 	status_type = models.CharField(max_length=50, blank=True, null=True)

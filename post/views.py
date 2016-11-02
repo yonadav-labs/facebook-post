@@ -4,10 +4,25 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 
+from post.models import *
+
 
 @login_required(login_url='/login/')
-def index(request):
-    return render(request, 'index.html')
+def query(request):
+    queries = Query.objects.all()
+    return render(request, 'query.html', {
+        'queries': queries
+    })
+
+
+@login_required(login_url='/login/')
+def post(request):
+    return render(request, 'query.html')
+
+
+@login_required(login_url='/login/')
+def comment(request):
+    return render(request, 'query.html')
 
 
 def user_login(request):
