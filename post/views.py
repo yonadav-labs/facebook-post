@@ -125,9 +125,12 @@ def user_signup(request):
         password = request.POST['password']
 
         try:
-            user = User.objects.create_user(username, email, password)
-            return HttpResponseRedirect('/login')
+            User.objects.create_user(username, email, password)
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return HttpResponseRedirect('/')
         except Exception, e:
+            print e
             message = 'Your username is already used. Please try with another one!'
             
     return render(request, 'login.html', {
