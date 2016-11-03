@@ -23,8 +23,10 @@ urlpatterns = [
     url(r'^$', views.query, name='query'),
     url(r'^post/(?P<query>.+)/(?P<mode>[_]?)$', views.post, name='post'),
     url(r'^post/(?P<status_id>\d+_\d+)/edit$', views.post_edit, name='post_edit'),
-    url(r'^comment$', views.comment, name='comment'),
+    url(r'^comment/(?P<post_id>.+)/(?P<mode>[_]?)$', views.comment, name='comment'),
+    url(r'^comment/(?P<comment_id>\d+_\d+)/edit$', views.comment_edit, name='comment_edit'),
     url(r'^retrieve_post$', views.retrieve_post, name='retrieve_post'),
+    url(r'^retrieve_comment$', views.retrieve_comment, name='retrieve_comment'),
 
     url(r'^login', views.user_login, name='user_login'),
     url(r'^signup', views.user_signup, name='user_signup'),

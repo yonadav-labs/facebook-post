@@ -1,5 +1,12 @@
-{% extends "base.html" %} {% load staticfiles %} {% block extra_css %}
-<link href="/static/vendors/bootgrid/jquery.bootgrid.min.css" rel="stylesheet"> {% endblock %} {% block content %}
+{% extends "base.html" %} 
+{% load staticfiles %} 
+
+{% block extra_css %}
+    <link href="/static/vendors/bootgrid/jquery.bootgrid.min.css" rel="stylesheet"> 
+    <link href="/static/css/fb_post.css" rel="stylesheet"> 
+{% endblock %} 
+
+{% block content %}
 <div class="container">
     <div class="card">
         <div class="card-header">
@@ -74,13 +81,15 @@ $(document).ready(function() {
                 return action_html;
             },
             "comment": function(column, row) {
-                return "<span class=\"post-id\" post_id=\""+row.id+"\">"+row.id+"</span>";
+                return "<span class=\"post-id c-cyan\" data-row-id=\""+row.id+"\">"+row.id+"</span>";
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function() {
         /* Executes after data is loaded and rendered */
         grid.find(".command-edit").on("click", function(e) {
             location.href = "/post/" + $(this).data("row-id") + "/edit";
+        }).end().find(".post-id").on("click", function(e) {
+            show_comments($(this).data("row-id"));
         });
     });
 });

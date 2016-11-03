@@ -45,7 +45,7 @@ class Comment(models.Model):
 	Model for Facebook comments
 	"""
 	comment_id = models.CharField(max_length=50, primary_key=True)
-	status_id = models.ForeignKey(Post)
+	post = models.ForeignKey(Post)
 	parent_id = models.CharField(max_length=50, blank=True, null=True)
 	comment_message = models.TextField()
 	comment_author = models.CharField(max_length=10)

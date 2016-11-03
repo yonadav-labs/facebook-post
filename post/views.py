@@ -9,6 +9,7 @@ from django.conf import settings
 
 from post.models import *
 from scraper.get_fb_posts_fb_page import scrapeFacebookPageFeedStatus
+from scraper.get_fb_comments_from_fb import scrapeFacebookPageFeedComments
 
 
 @login_required(login_url='/login/')
@@ -34,16 +35,29 @@ def post(request, query, mode):
 
 
 @login_required(login_url='/login/')
+def comment(request, post_id, mode):
+    comments = Comment.objects.filter(post_id=post_id)[:50]
+    return render(request, 'comment.html', {
+        'comments': comments,
+        'mode': mode,
+        'post_id': post_id
+    })
+
+
+@login_required(login_url='/login/')
 def post_edit(request, status_id):
     post = Post.objects.get(status_id=status_id)
     return render(request, 'post_form.html', {
         'post': post
     })
 
-    
+
 @login_required(login_url='/login/')
-def comment(request):
-    return render(request, 'query.html')
+def comment_edit(request, comment_id):
+    comment = Comment.objects.get(comment_id=comment_id)
+    return render(request, 'comment_form.html', {
+        'comment': comment
+    })
 
 
 @login_required(login_url='/login/')
@@ -56,6 +70,23 @@ def retrieve_post(request):
         # trigger search
         access_token = settings.FACEBOOK['APP_ID'] + "|" + settings.FACEBOOK['APP_SECRET']
         post_thread = Thread(target=scrapeFacebookPageFeedStatus, args=(q, access_token, query.id))
+        post_thread.setDaemon(True)
+        post_thread.start()
+
+        status = 'loading'
+
+    return JsonResponse({'status': status})
+
+
+@login_required(login_url='/login/')
+def retrieve_comment(request):
+    post_id = request.POST.get('post_id')
+    if Comment.objects.filter(post_id=post_id).exists():
+        status = 'complete'
+    else:
+        # trigger search
+        access_token = settings.FACEBOOK['APP_ID'] + "|" + settings.FACEBOOK['APP_SECRET']
+        post_thread = Thread(target=scrapeFacebookPageFeedComments, args=(access_token, post_id))
         post_thread.setDaemon(True)
         post_thread.start()
 
