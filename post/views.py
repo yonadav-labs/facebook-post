@@ -10,6 +10,7 @@ from django.conf import settings
 from post.models import *
 from scraper.get_fb_posts_fb_page import scrapeFacebookPageFeedStatus
 from scraper.get_fb_comments_from_fb import scrapeFacebookPageFeedComments
+from allauth.socialaccount.models import *
 
 
 @login_required(login_url='/login/')
@@ -58,6 +59,24 @@ def comment_edit(request, comment_id):
     return render(request, 'comment_form.html', {
         'comment': comment
     })
+
+
+@login_required(login_url='/login/')
+def facebook(request):
+    facebook_data = SocialAccount.objects.get(user=request.user, 
+        provider='facebook').extra_data
+
+    accounts = [{
+        'name': facebook_data['name'], 
+        'id': facebook_data['id'],
+        'primary': 'Primary Account' 
+    }]
+
+    for item in facebook_data['context']['mutual_likes']['data']:
+        account = {'name': item['name'], 'id': item['id']}
+        accounts.append(account)
+
+    return render(request, 'facebook_accounts.html', {'accounts': accounts})
 
 
 @login_required(login_url='/login/')

@@ -37,9 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'post',
     'scraper',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',    
+    'allauth.socialaccount.providers.facebook',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,12 +85,17 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'facebook_post',
-        'USER': '',
-        'PASSWORD': '',
+        'USER': 'root',
+        'PASSWORD': 'newfirst',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -127,10 +140,45 @@ STATICFILES_DIRS = (
 )
 
 FACEBOOK = {
-    'APP_ID': "",
-    'APP_SECRET': "" # DO NOT SHARE WITH ANYONE!    
+    'APP_ID': "1679782682332099",
+    'APP_SECRET': "3c9a68e9d6a29b6f240112c7c6998b70" # DO NOT SHARE WITH ANYONE!    
 }
 
 # IN SECOND
 THRESHOLD_POST_TIME = 3 * 60
 THRESHOLD_COMMENT_TIME = 3 * 60
+
+SOCIALACCOUNT_PROVIDERS = \
+    {'facebook':
+       {'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends', 'manage_pages', 'read_insights', 'publish_actions', 'publish_pages', 'user_likes'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'context',
+            'cover',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time'],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.8'}}
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'jason50010001@gmail.com'
+EMAIL_HOST_PASSWORD = 'Newfirst90'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'jason50010001@gmail.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+LOGIN_REDIRECT_URL = "/facebook/"
