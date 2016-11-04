@@ -1,5 +1,7 @@
 *.pyc
 *.pyo
 migrations
+settings.py
+settings_production.py
 facebook_post_service/settings.py
 facebook_post_service/settings_production.py
