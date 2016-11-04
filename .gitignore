@@ -2,3 +2,4 @@
 *.pyo
 migrations
 settings.py
+settings_production.py
