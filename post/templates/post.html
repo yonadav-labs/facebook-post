@@ -15,10 +15,10 @@
         <table id="data-table-command" class="table table-striped table-vmiddle">
             <thead>
                 <tr>
-                    <td data-column-id="id" data-formatter="comment" data-identifier="true">id</td>
-                    <th data-column-id="status_message">message</th>
-                    <th data-column-id="link_name" data-visible="false">link_name</th>
+                    <td data-column-id="id" data-identifier="true" data-visible="false">id</td>
                     <th data-column-id="status_type">type</th>
+                    <th data-column-id="status_message" data-formatter="message">message</th>
+                    <th data-column-id="link_name" data-visible="false">link_name</th>
                     <th data-column-id="status_link">url</th>
                     <th data-column-id="status_published">published</th>
                     <th data-column-id="num_reactions" data-visible="false">reactions</th>
@@ -37,9 +37,9 @@
                 {% for item in posts %}
                 <tr>
                     <td>{{item.status_id}}</td>
+                    <td>{{item.status_type}}</td>
                     <td>{{item.status_message}}</td>
                     <td>{{item.link_name}}</td>
-                    <td>{{item.status_type}}</td>
                     <td>{{item.status_link}}</td>
                     <td>{{item.status_published}}</td>
                     <td>{{item.num_reactions}}</td>
@@ -78,17 +78,19 @@ $(document).ready(function() {
         formatters: {
             "commands": function(column, row) {
                 action_html = "<button type=\"button\" class=\"btn btn-icon command-edit waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></button> ";
+                action_html += "<button type=\"button\" class=\"btn btn-icon command-comments waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-assignment\"></span></button> ";
                 return action_html;
             },
-            "comment": function(column, row) {
-                return "<span class=\"post-id c-cyan\" data-row-id=\""+row.id+"\">"+row.id+"</span>";
+            "message": function(column, row) {
+                action_html = "<div data-toggle=\"tooltip\" data-placement=\"top\" title=\""+row.status_message+"\">"+row.status_message+"</div>";
+                return action_html;
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function() {
         /* Executes after data is loaded and rendered */
         grid.find(".command-edit").on("click", function(e) {
             location.href = "/post/" + $(this).data("row-id") + "/edit";
-        }).end().find(".post-id").on("click", function(e) {
+        }).end().find(".command-comments").on("click", function(e) {
             show_comments($(this).data("row-id"));
         });
     });

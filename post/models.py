@@ -53,4 +53,4 @@ class Comment(models.Model):
 	comment_likes = models.IntegerField()
 
 	def __str__(self):
-		return comment_id
+		return self.comment_id

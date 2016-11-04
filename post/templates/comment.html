@@ -16,7 +16,7 @@
                 <tr>
                     <td data-column-id="id" data-identifier="true">id</td>
                     <th data-column-id="parent_id" data-visible="false">Parent Id</th>
-                    <th data-column-id="comment_message">Message</th>
+                    <th data-column-id="comment_message" data-formatter="message">Message</th>
                     <th data-column-id="comment_author">Author</th>
                     <th data-column-id="comment_published">Published</th>
                     <th data-column-id="comment_likes" data-visible="false">Likes</th>
@@ -59,6 +59,10 @@ $(document).ready(function() {
         formatters: {
             "commands": function(column, row) {
                 action_html = "<button type=\"button\" class=\"btn btn-icon command-edit waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></button> ";
+                return action_html;
+            },
+            "message": function(column, row) {
+                action_html = "<div data-toggle=\"tooltip\" data-placement=\"top\" title=\""+row.comment_message+"\">"+row.comment_message+"</div>";
                 return action_html;
             }
         }
