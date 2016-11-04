@@ -15,7 +15,8 @@ from allauth.socialaccount.models import *
 
 @login_required(login_url='/login/')
 def query(request):
-    queries = Query.objects.all()
+    user = ",{},".format(request.user.id)
+    queries = Query.objects.filter(users__contains=user)
     return render(request, 'query.html', {
         'queries': queries
     })
@@ -24,7 +25,9 @@ def query(request):
 @login_required(login_url='/login/')
 def post(request, query, mode):
     if query == 'all':
-        posts = Post.objects.all()[:50]
+        user = ",{},".format(request.user.id)
+        queries = Query.objects.filter(users__contains=user)
+        posts = Post.objects.filter(query__in=queries)[:50]
     else:
         posts = Post.objects.filter(query__query=query)[:100]
 
@@ -93,10 +96,19 @@ def facebook(request):
 @login_required(login_url='/login/')
 def retrieve_post(request):
     q = request.POST.get('q')
-    if Query.objects.filter(query=q).exists():
+    user = ",{},".format(request.user.id)
+    query = Query.objects.filter(query=q).first()
+    if query:
         status = 'complete'
+        # register the user to this query
+        if query.users:
+            query.users = query.users + user
+        else:
+            query.users = user
+            
+        query.save()
     else:
-        query = Query.objects.create(query=q)
+        query = Query.objects.create(query=q, users=user)
         # trigger search
         access_token = settings.FACEBOOK['APP_ID'] + "|" + settings.FACEBOOK['APP_SECRET']
         post_thread = Thread(target=scrapeFacebookPageFeedStatus, args=(q, access_token, query.id))
