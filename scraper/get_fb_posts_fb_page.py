@@ -136,7 +136,7 @@ def processFacebookPageFeedStatus(status, access_token, query_id):
     # Save a tuple of all processed data
     Post.objects.create(status_id=status_id,
                         query_id=query_id,
-                        status_message=status_message.replace('"', ''),
+                        status_message=status_message,
                         link_name=link_name,
                         status_link=status_link,
                         status_type=status_type,
