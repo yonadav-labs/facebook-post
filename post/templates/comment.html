@@ -62,7 +62,7 @@ $(document).ready(function() {
                 return action_html;
             },
             "message": function(column, row) {
-                action_html = "<div data-toggle=\"tooltip\" data-placement=\"top\" title=\""+row.comment_message+"\">"+row.comment_message+"</div>";
+                action_html = "<div data-toggle=\"tooltip\" data-placement=\"top\" title=\""+row.comment_message.replace('"', '')+"\">"+row.comment_message+"</div>";
                 return action_html;
             }
         }
