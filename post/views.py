@@ -62,19 +62,30 @@ def comment_edit(request, comment_id):
 
 
 @login_required(login_url='/login/')
+def blog(request, slug):
+    blog = Blog.objects.get(url=slug)
+    return render(request, 'blog.html', {
+        'blog': blog
+    })
+
+
+@login_required(login_url='/login/')
 def facebook(request):
-    facebook_data = SocialAccount.objects.get(user=request.user, 
-        provider='facebook').extra_data
+    try:
+        facebook_data = SocialAccount.objects.get(user=request.user, 
+            provider='facebook').extra_data
 
-    accounts = [{
-        'name': facebook_data['name'], 
-        'id': facebook_data['id'],
-        'primary': 'Primary Account' 
-    }]
+        accounts = [{
+            'name': facebook_data['name'], 
+            'id': facebook_data['id'],
+            'primary': 'Primary Account' 
+        }]
 
-    for item in facebook_data['context']['mutual_likes']['data']:
-        account = {'name': item['name'], 'id': item['id']}
-        accounts.append(account)
+        for item in facebook_data['context']['mutual_likes']['data']:
+            account = {'name': item['name'], 'id': item['id']}
+            accounts.append(account)
+    except Exception, e:
+        accounts = []
 
     return render(request, 'facebook_accounts.html', {'accounts': accounts})
 
