@@ -82,14 +82,17 @@ def processFacebookComment(comment, status_id, parent_id = ''):
             '%Y-%m-%d %H:%M:%S') # best time format for spreadsheet programs
 
     # Return a tuple of all processed data
-    Comment.objects.create(comment_id=comment_id,
-                           post_id=status_id,
-                           parent_id=parent_id,
-                           comment_message=comment_message,
-                           comment_author=comment_author,
-                           comment_published=comment_published,
-                           comment_likes=comment_likes                                          
-                           )
+    try:
+        Comment.objects.create(comment_id=comment_id,
+                               post_id=status_id,
+                               parent_id=parent_id,
+                               comment_message=comment_message,
+                               comment_author=comment_author,
+                               comment_published=comment_published,
+                               comment_likes=comment_likes                                          
+                               )
+    except Exception, e:
+        print 'Database encoding Error'
 
 
 def scrapeFacebookPageFeedComments(access_token, post_id):

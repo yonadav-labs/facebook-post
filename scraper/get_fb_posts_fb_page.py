@@ -134,23 +134,26 @@ def processFacebookPageFeedStatus(status, access_token, query_id):
     num_angrys = get_num_total_reactions('angry', reactions)
 
     # Save a tuple of all processed data
-    Post.objects.create(status_id=status_id,
-                        query_id=query_id,
-                        status_message=status_message,
-                        link_name=link_name,
-                        status_link=status_link,
-                        status_type=status_type,
-                        status_published=status_published,
-                        num_shares=num_shares,
-                        num_reactions=num_reactions,
-                        num_comments=num_comments,
-                        num_loves=num_loves,
-                        num_likes=num_likes,
-                        num_wows=num_wows,
-                        num_hahas=num_hahas,
-                        num_sads=num_sads,
-                        num_angrys=num_angrys
-                    )
+    try:
+        Post.objects.create(status_id=status_id,
+                            query_id=query_id,
+                            status_message=status_message,
+                            link_name=link_name,
+                            status_link=status_link,
+                            status_type=status_type,
+                            status_published=status_published,
+                            num_shares=num_shares,
+                            num_reactions=num_reactions,
+                            num_comments=num_comments,
+                            num_loves=num_loves,
+                            num_likes=num_likes,
+                            num_wows=num_wows,
+                            num_hahas=num_hahas,
+                            num_sads=num_sads,
+                            num_angrys=num_angrys
+                        )
+    except Exception, e:
+        print 'Database encoding Error'
 
 
 def scrapeFacebookPageFeedStatus(page_id, access_token, query_id):
