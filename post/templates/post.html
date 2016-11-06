@@ -21,15 +21,15 @@
                     <th data-column-id="link_name" data-visible="false">link_name</th>
                     <th data-column-id="status_link">url</th>
                     <th data-column-id="status_published">published</th>
-                    <th data-column-id="num_reactions" data-visible="false">reactions</th>
-                    <th data-column-id="num_comments">comments</th>
-                    <th data-column-id="num_shares">shares</th>
-                    <th data-column-id="num_likes">likes</th>
-                    <th data-column-id="num_loves" data-visible="false">loves</th>
-                    <th data-column-id="num_wows" data-visible="false">wows</th>
-                    <th data-column-id="num_hahas" data-visible="false">hahas</th>
-                    <th data-column-id="num_sads" data-visible="false">sads</th>
-                    <th data-column-id="num_angrys" data-visible="false">angrys</th>
+                    <th data-column-id="num_reactions" data-type="numeric" data-visible="false">reactions</th>
+                    <th data-column-id="num_comments" data-type="numeric">comments</th>
+                    <th data-column-id="num_shares" data-type="numeric">shares</th>
+                    <th data-column-id="num_likes" data-type="numeric">likes</th>
+                    <th data-column-id="num_loves" data-type="numeric" data-visible="false">loves</th>
+                    <th data-column-id="num_wows" data-type="numeric" data-visible="false">wows</th>
+                    <th data-column-id="num_hahas" data-type="numeric" data-visible="false">hahas</th>
+                    <th data-column-id="num_sads" data-type="numeric" data-visible="false">sads</th>
+                    <th data-column-id="num_angrys" data-type="numeric" data-visible="false">angrys</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">Action</th>
                 </tr>
             </thead>
@@ -75,6 +75,7 @@ $(document).ready(function() {
             iconRefresh: 'zmdi-refresh',
             iconUp: 'zmdi-expand-less'
         },
+        rowCount: [-1, 20, 50, 100],
         formatters: {
             "commands": function(column, row) {
                 action_html = "<button type=\"button\" class=\"btn btn-icon command-edit waves-effect waves-circle\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></button> ";

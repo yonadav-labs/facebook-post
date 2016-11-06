@@ -27,9 +27,9 @@ def post(request, query, mode):
     if query == 'all':
         user = ",{},".format(request.user.id)
         queries = Query.objects.filter(users__contains=user)
-        posts = Post.objects.filter(query__in=queries)[:50]
+        posts = Post.objects.filter(query__in=queries)[:200]
     else:
-        posts = Post.objects.filter(query__query=query)[:100]
+        posts = Post.objects.filter(query__query=query)[:200]
 
     return render(request, 'post.html', {
         'posts': posts,
@@ -40,7 +40,7 @@ def post(request, query, mode):
 
 @login_required(login_url='/login/')
 def comment(request, post_id, mode):
-    comments = Comment.objects.filter(post_id=post_id)[:50]
+    comments = Comment.objects.filter(post_id=post_id)[:200]
     return render(request, 'comment.html', {
         'comments': comments,
         'mode': mode,
